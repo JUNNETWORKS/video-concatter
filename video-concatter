@@ -7,7 +7,7 @@ p = re.compile("'.+?.mp4'")
 
 video_paths = input()
 video_paths = p.findall(video_paths)
-# 両端のシングルクオーテーションを削除
+# Remove single quotation marks on both ends
 video_paths = list(map(lambda path: path[1:-1], video_paths))
 
 print(video_paths)
