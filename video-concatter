@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import os
 import os.path as osp
+import re
+
+p = re.compile("'.+?.mp4'")
 
 video_paths = input()
-video_paths = video_paths.split(" ")
+video_paths = p.findall(video_paths)
 # 空白文字だけの要素を削除
 video_paths = list(filter(lambda path: path, video_paths))
 # 両端のシングルクオーテーションを削除
