@@ -29,6 +29,6 @@ output_path = osp.join(
     "_concatenated.mp4")
 
 os.system(
-    f"ffmpeg -f concat -safe 0 -i {mylist_path} {output_path} -y")
+    f"ffmpeg -f concat -safe 0 -i {mylist_path} -c copy {output_path} -y")
 
 os.remove(mylist_path)
