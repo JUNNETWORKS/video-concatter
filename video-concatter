@@ -11,14 +11,19 @@ video_paths = list(map(lambda path: path[1:-1], video_paths))
 
 print(video_paths)
 
-mylist_path = "./mylist.txt"
+first_video = video_paths[0]
+execution_dir = osp.dirname(first_video)
+
+mylist_path = osp.join(execution_dir, "mylist.txt")
 with open(mylist_path, "w") as f:
     for path in video_paths:
         f.write("file " + path + "\n")
 
-first_video = video_paths[0]
-video_dir = osp.dirname(first_video)
-output_path = osp.join(video_dir, osp.splitext(osp.basename(first_video))[0] + "_concatenated.mp4")
+output_path = osp.join(
+    execution_dir,
+    osp.splitext(
+        osp.basename(first_video))[0] +
+    "_concatenated.mp4")
 
 os.system(
     f"ffmpeg -f concat -safe 0 -i {mylist_path} {output_path} -y")
