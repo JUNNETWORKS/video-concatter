@@ -2,6 +2,7 @@
 import os
 import os.path as osp
 import re
+import subprocess
 
 p = re.compile("'.+?.mp4'")
 
@@ -15,6 +16,15 @@ print(video_paths)
 first_video = video_paths[0]
 execution_dir = osp.dirname(first_video)
 
+# Fixing the code to an intermediate format
+for i, path in enumerate(video_paths):
+    name, ext = osp.splitext(path)
+    fixed_path = name + "_fixed.mp4"
+    proc = subprocess.Popen(
+        ["ffmpeg", "-i", path, "-video_track_timescale", "90000", fixed_path, "-y"])
+    proc.communicate()
+    video_paths[i] = fixed_path
+
 mylist_path = osp.join(execution_dir, "mylist.txt")
 with open(mylist_path, "w") as f:
     for path in video_paths:
@@ -26,7 +36,11 @@ output_path = osp.join(
         osp.basename(first_video))[0] +
     "_concatenated.mp4")
 
-os.system(
-    f"ffmpeg -f concat -safe 0 -i {mylist_path} -c copy {output_path} -y")
+proc = subprocess.Popen(["ffmpeg", "-f", "concat", "-safe", "0", "-i",
+                         mylist_path, "-c", "copy", output_path, "-y"])
+proc.communicate()
+print(f"return code: {proc.returncode}")
 
 os.remove(mylist_path)
+for path in video_paths:
+    os.remove(path)
