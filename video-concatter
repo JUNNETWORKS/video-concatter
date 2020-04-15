@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import os
+import os.path as osp
+
+video_paths = input()
+video_paths = video_paths.split(" ")
+# 空白文字だけの要素を削除
+video_paths = list(filter(lambda path: path, video_paths))
+# 両端のシングルクオーテーションを削除
+video_paths = list(map(lambda path: path[1:-1], video_paths))
+
+print(video_paths)
+
+mylist_path = "./mylist.txt"
+with open(mylist_path, "w") as f:
+    for path in video_paths:
+        f.write("file " + path + "\n")
+
+first_video = video_paths[0]
+video_dir = osp.dirname(first_video)
+output_path = osp.join(video_dir, osp.splitext(osp.basename(first_video))[0] + "_concatenated.mp4")
+
+os.system(
+    f"ffmpeg -f concat -safe 0 -i {mylist_path} {output_path} -y")
+
+os.remove(mylist_path)
