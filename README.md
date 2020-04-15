@@ -1,4 +1,6 @@
-# Video Concatter
+<div align="center">
+  <img src="video-concatter-logo.png">
+</div>
 
 ![](sample.gif)
 
